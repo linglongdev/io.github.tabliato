@@ -1,0 +1,107 @@
+From 56159e557e08e19b2e1b47642dd4440f7a69e0c6 Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Sun, 8 Sep 2024 16:45:47 +0800
+Subject: [PATCH] install
+
+---
+ Ressources.qrc                       |  2 +-
+ debian/tabliato.desktop              |  2 +-
+ ressources/exemples/Polka_piquee.dtb | 34 ++++++++++++++++++++++++++++
+ tabliato.pro                         | 12 ++++++++--
+ 4 files changed, 46 insertions(+), 4 deletions(-)
+ create mode 100755 ressources/exemples/Polka_piquee.dtb
+
+diff --git a/Ressources.qrc b/Ressources.qrc
+index dd2b801..bede177 100644
+--- a/Ressources.qrc
++++ b/Ressources.qrc
+@@ -102,6 +102,6 @@
+         <file>ressources/exemples/Exemple - basique.dtb</file>
+         <file>ressources/exemples/Exemple - boutons ou notes.dtb</file>
+         <file>ressources/exemples/Exemple - anacrouse.dtb</file>
+-        <file>ressources/exemples/Polka piquée.dtb</file>
++        <file>ressources/exemples/Polka_piquee.dtb</file>
+     </qresource>
+ </RCC>
+diff --git a/debian/tabliato.desktop b/debian/tabliato.desktop
+index 9f540e2..1177c59 100644
+--- a/debian/tabliato.desktop
++++ b/debian/tabliato.desktop
+@@ -1,6 +1,6 @@
+ [Desktop Entry]
+ Name=tabliato
+-Comment=
++Comment=Tablatures pour accordéon diatonique
+ Categories=Qt;AudioVideo;Music;Utility;TextEditor;
+ Keywords=lilypond;editor;sheet music;
+ Exec=tabliato
+diff --git a/ressources/exemples/Polka_piquee.dtb b/ressources/exemples/Polka_piquee.dtb
+new file mode 100755
+index 0000000..f624a97
+--- /dev/null
++++ b/ressources/exemples/Polka_piquee.dtb
+@@ -0,0 +1,34 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<tabliato>
++    <propertie time="2/4" key="g \major" tempo="4=130" instrument="" tagline="\tabliato" title="Polka piquée" motif="22" subtitle="Polka piquée - Débutant" accordion="ctl1gc" rythm="B a B a " displayFingering="auto" composer="Trad." poet="" system="cadb"/>
++<tabulature>% Fichier -> Ouvrir un example pour charger une tablature d'exemple
++
++% Bouton graver pour produire le rendu de cette tablature d'exemple
++
++\repeat volta 2 
++{
++    p5:8 6 7 6 G
++    5 6 t6:4 [G D]
++    5:8 6 7 6 D
++}
++\alternative
++{
++   { t5:8 6 p5:4 [D G] }
++   { t5:8 t6 p6:4 [D G] }
++}
++
++\break
++ 
++\repeat volta 2 
++{
++    p7:4 6 G
++    5:8 6 t6:4 [G D]
++    7:4 6 D
++}
++\alternative
++{
++   { t5:8 6 p5:4 [D G] }
++   { t5:8 t6 p6:4 [D G] }
++}</tabulature>
++    <lyric></lyric>
++</tabliato>
+diff --git a/tabliato.pro b/tabliato.pro
+index 32f06de..a9c6bf9 100644
+--- a/tabliato.pro
++++ b/tabliato.pro
+@@ -11,8 +11,8 @@ RC_ICONS = ./ressources/icons/tabliato.ico
+ }
+ 
+ unix{
+-INCLUDEPATH += . ./header /usr/include/poppler/qt5
+-LIBS += -L/usr/local/lib -lpoppler-qt5 -lstdc++
++INCLUDEPATH += . ./header $$PREFIX/include/poppler/qt5
++LIBS += -L$$PREFIX/lib -lpoppler-qt5 -lstdc++
+ }
+ 
+ QT += core\
+@@ -43,3 +43,11 @@ QT_LOGGING_RULES=*.debug=true qt-creator
+ 
+ RESOURCES += \
+     Ressources.qrc
++
++target.path = $$PREFIX/bin
++desktop.files = debian/tabliato.desktop
++desktop.path = $$PREFIX/share/applications/
++icons.path =  $$PREFIX/share/icons/hicolor/scalable/apps/
++icons.files = ressources/icons/tabliato.svg
++
++INSTALLS += target desktop icons
+-- 
+2.43.4
+

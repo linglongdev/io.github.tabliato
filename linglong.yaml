@@ -1,0 +1,52 @@
+version: "1"
+
+package:
+  id: io.github.tabliato
+  name: tabliato
+  version: 1.3.3.1
+  kind: app
+  description: |
+    Tablatures pour accordéon diatonique
+
+command:
+  - /opt/apps/io.github.tabliato/files/bin/tabliato
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/Jean-Romain/tabliato.git
+    version: master
+    commit: ae41035e7ffe33c65cf4d5e11b6b34e6c9cf685a
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/p/poppler/libpoppler-qt5-dev_0.71.0-5+deb10u3_amd64.deb
+    digest: d0d8019f297bf9034b3f3c1fd9ae5074ad9675d45bf8a860a9e9d08b0f54a580
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/p/poppler/libpoppler-dev_0.71.0-5+deb10u3_amd64.deb
+    digest: d0f88f9330fa13e300bf1a20d21aa0af4635486bcff0d3a5edbbd16e69389872
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/p/poppler/libpoppler-qt5-1_0.71.0-5+deb10u3_amd64.deb
+    digest: 8f468ee078d336c9b9b1b370204953002332fe075ac5980eec4dbc4c19f786ce
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/p/poppler/libpoppler82_0.71.0-5+deb10u3_amd64.deb
+    digest: 93197c21dbe40e7b078ad4868a2ee9b3bacde822df0dfda39350f46601d13bb7
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/t/tiff/libtiff5_4.1.0+git191117-2~deb10u9_amd64.deb
+    digest: 469a880dde9281620508d32e472a8aad582794a8c1ac092a370abb8804219f46
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/o/openjpeg2/libopenjp2-7_2.3.0-2+deb10u2_amd64.deb
+    digest: 55127318744936099e6979136c66bf6be6528151639215f657891cfe021cfd56
+  - kind: file
+    url: http://security.debian.org/debian-security/pool/updates/main/libw/libwebp/libwebp6_0.6.1-2+deb10u3_amd64.deb
+    digest: 7e3c5c355e02c97fa6e8b47b495cd2c38f93d8d9a1b8f6b3c5449e9302c9b302
+
+build: |
+  bash ./install_dep linglong/sources $PREFIX
+
+  cd /project/linglong/sources/tabliato.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
+
